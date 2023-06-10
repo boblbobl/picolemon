@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
 
 # Set your project name here
-set(PROJECT_NAME my_project)
+set(PROJECT_NAME picolemons)
 
 # Set your project sources here
 set(PROJECT_SOURCES
     main.cpp
+
+    spritesheet.hpp
+    spritesheet.cpp
 )
 
 # --- Here Be Boilerplate ---
@@ -41,5 +44,5 @@ picosystem_executable(
 pixel_double(${PROJECT_NAME})          # 120x120 resolution game, pixel-doubled to 240x240
 disable_startup_logo(${PROJECT_NAME})  # Skip the PicoSystem splash
 #no_font(${PROJECT_NAME})              # Omit the default font
-#no_spritesheet(${PROJECT_NAME})       # Omit the default spritesheet
+no_spritesheet(${PROJECT_NAME})        # Omit the default spritesheet
 #no_overclock(${PROJECT_NAME})         # Don't overclock
