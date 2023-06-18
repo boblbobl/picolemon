@@ -24,13 +24,13 @@ vector<lemon> lemons;
 const int8_t PLAYER_SPEED = 2;
 int32_t score = 0;
 int32_t playerAnimationTime = 0;
-int32_t animationWait = 50;
+int32_t animationWait = 100;
 
 void new_lemon() {
 	int8_t x = player.x;
 	int8_t y = player.y;
 
-	while (intersects(x, y, 8, 8, player.x, player.y, 8, 16)) {
+	while (intersects(x, y, 8, 8, player.x, player.y, 16, 16)) {
 		x = static_cast<int8_t>(rand() % 112);
 		y = static_cast<int8_t>(rand() % 112);
 	}
@@ -52,21 +52,23 @@ void step() {
 		}
 		else if (player.sid == 3) {
 			player.sid = 0;
-			player.flipped = !player.flipped;
+			//player.flipped = !player.flipped;
 		}
 
+		player.sprite = player.sid*2;
 		if (player.dx != 0) {
-			player.sprite = player.sid+4;
+			player.sprite = player.sprite+16;
 			if (player.dx == PLAYER_SPEED) {
-				player.flipped = false;
-			}
-			else {
 				player.flipped = true;
 			}
+			else {
+				player.flipped = false;
+			}
 		}
-		else {
-			player.sprite = player.sid;
+		else if (player.dy == -PLAYER_SPEED) {
+			player.sprite = player.sprite+32;
 		}
+
 
 		playerAnimationTime = time();
 	}
@@ -93,7 +95,7 @@ void update(uint32_t tick) {
 	int8_t newX = player.x + player.dx;
 	int8_t newY = player.y + player.dy;
 
-	if (newX < 112 && newX > 0) {
+	if (newX < 104 && newX > 0) {
 		player.x = newX;
 	}
 	if (newY < 104 && newY > 0) {
@@ -102,7 +104,7 @@ void update(uint32_t tick) {
 	
 	for (int i=0; i < lemons.size(); i++) {
 		lemon l = lemons[i];
-		if (intersects(l.x, l.y, 8, 8, player.x, player.y, 8, 16)) {
+		if (intersects(l.x, l.y, 8, 8, player.x, player.y, 16, 16)) {
 			lemons.erase(lemons.begin() + i);
 			score++;
 			new_lemon();
@@ -118,18 +120,19 @@ void draw(uint32_t tick) {
 
 	//draw current score
 	pen(15, 15, 15);
-	text(str(score), 0, 0);
+	sprite(49, 0, 0);
+	text(str(score), 10, 0);
 
 	//draw player
 	if (player.flipped) {
-		sprite(player.sprite, player.x, player.y, 1, 2, 8, 16, HFLIP);
+		sprite(player.sprite, player.x, player.y, 2, 2, 16, 16, HFLIP);
 	}
 	else {
-		sprite(player.sprite, player.x, player.y, 1, 2, 8, 16);
+		sprite(player.sprite, player.x, player.y, 2, 2, 16, 16);
 	}
 
 	//draw lemons
 	for (lemon l : lemons) {
-		sprite(8, l.x, l.y);
+		sprite(48, l.x, l.y);
 	}
 }
