@@ -59,10 +59,10 @@ void step() {
 		if (player.dx != 0) {
 			player.sprite = player.sprite+16;
 			if (player.dx == PLAYER_SPEED) {
-				player.flipped = true;
+				player.flipped = false;
 			}
 			else {
-				player.flipped = false;
+				player.flipped = true;
 			}
 		}
 		else if (player.dy == -PLAYER_SPEED) {
